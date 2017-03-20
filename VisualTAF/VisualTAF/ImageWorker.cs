@@ -20,23 +20,29 @@ namespace VisualTAF
             {
                 using (MagickImage images = new MagickImage(path2))
                 {
-                    MagickFormat asd = MagickFormat.Screenshot;
+                    image.Compare(images);
                 }
             }
         }
 
         public void TakeScreenshot(string savePath)
         {
-            Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height,
-                PixelFormat.Format32bppRgb);
-            using (Graphics gr = Graphics.FromImage(bmp))
-            {
-                gr.CopyFromScreen(Screen.PrimaryScreen.Bounds.X, Screen.PrimaryScreen.Bounds.Y,
-                    0, 0, Screen.PrimaryScreen.Bounds.Size, CopyPixelOperation.SourceCopy);
-            }
-            using (MagickImage screen = new MagickImage(bmp))
+            using (MagickImage screen = new MagickImage("screenshot:"))
             {
                 screen.Write(savePath);
+            }
+        }
+
+        public void Check(string path1, string path2)
+        {
+            var diffImagePath = @"D:\Compare Test\imageDiff.jpg";
+
+            using (MagickImage image1 = new MagickImage(path1))
+            using (MagickImage image2 = new MagickImage(path2))
+            using (MagickImage diffImage = new MagickImage())
+            {
+                image1.Compare(image2, ErrorMetric.Absolute, diffImage);
+                diffImage.Write(diffImagePath);
             }
         }
     }

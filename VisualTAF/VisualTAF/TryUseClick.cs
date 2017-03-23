@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace VisualTAF
 {
     [TestFixture]
@@ -15,13 +16,13 @@ namespace VisualTAF
         {
             string path1 = @"C:\Users\Yauheni_Dzima\Source\Repos\VisualTAF\VisualTAF\VisualTAF\bin\Debug\Desktop.png";
             string path2 = @"C:\Users\Yauheni_Dzima\Source\Repos\VisualTAF\VisualTAF\VisualTAF\bin\Debug\Win.png";
+            string path3 = @"C:\Users\Yauheni_Dzima\Source\Repos\VisualTAF\VisualTAF\VisualTAF\bin\Debug\euro.png";
             ImageWorker image = new ImageWorker();
             image.TakeScreenshot(path1);
-            image.FindDifference(path1,path2);
-            
-            HelpMethods.Click(1850,0);
+            Console.WriteLine(image.FindDifference(path1, path2));
+            image.Check(path1,path2);
+            //HelpMethods.Click(1850,0);
             HelpMethods.ForDebug();
-            //Assert.Pass("Your first passing test");
         }
     }
 }

@@ -7,20 +7,22 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
 using ImageMagick;
 
 namespace VisualTAF
 {
     public class ImageWorker
     {
-        public void FindDifference(string path1, string path2)
+        public double FindDifference(string path1, string path2)
         {
-            MagickImageCollection colection = new MagickImageCollection();
             using (MagickImage image = new MagickImage(path1))
             {
                 using (MagickImage images = new MagickImage(path2))
                 {
-                    image.Compare(images);
+                    return image.Compare(images).NormalizedMeanError;
                 }
             }
         }
@@ -33,17 +35,48 @@ namespace VisualTAF
             }
         }
 
-        public void Check(string path1, string path2)
+        public void FindSubImage(string imagePath, string subImagePath)
         {
-            var diffImagePath = @"D:\Compare Test\imageDiff.jpg";
+            var diffImagePath = @"C:\Users\Yauheni_Dzima\Source\Repos\VisualTAF\VisualTAF\VisualTAF\bin\Debug\Win";
 
-            using (MagickImage image1 = new MagickImage(path1))
-            using (MagickImage image2 = new MagickImage(path2))
-            using (MagickImage diffImage = new MagickImage())
+            //using (MagickImage image1 = new MagickImage(path1)) ;
+            //using (MagickImage image2 = new MagickImage(path2)) ;
+                //using (MagickImage diffImage = new MagickImage())
+                //{
+                //    DateTime starTime = DateTime.Now;
+                //    MagickSearchResult magickSearchResult = image1.SubImageSearch(image2);
+                //    MagickImage searchResultImage = magickSearchResult.SimilarityImage;
+                //    image1.Compare(image2, ErrorMetric.Absolute, diffImage);
+                //    diffImage.Write(diffImagePath+"2.png");
+                //    searchResultImage.Write(diffImagePath+"SubImageSearch.png");
+                //    DateTime finishTime = DateTime.Now;
+                //    Console.WriteLine(finishTime - starTime);
+                //}
+            Image<Bgr, byte> source = new Image<Bgr, byte>(imagePath); // Image B
+            Image<Bgr, byte> template = new Image<Bgr, byte>(subImagePath); // Image A
+            Image<Bgr, byte> imageToShow = source.Copy();
+
+            using (Image<Gray, float> result = source.MatchTemplate(template, Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed))
             {
-                image1.Compare(image2, ErrorMetric.Absolute, diffImage);
-                diffImage.Write(diffImagePath);
+                double[] minValues, maxValues;
+                Point[] minLocations, maxLocations;
+                result.MinMax(out minValues, out maxValues, out minLocations, out maxLocations);
+
+                // You can try different values of the threshold. I guess somewhere between 0.75 and 0.95 would be good.
+                if (maxValues[0] > 0.9)
+                {
+                    // This is a match. Do something with it, for example draw a rectangle around it.
+                    Rectangle match = new Rectangle(maxLocations[0], template.Size);
+                    imageToShow.Draw(match, new Bgr(Color.Red), 3);
+                }
             }
+
+            // Show imageToShow in an ImageBox (here assumed to be called imageBox1)
+            using (MagickImage image1 = new MagickImage(imageToShow.Bitmap))
+            {
+                image1.Write(diffImagePath+"2.png");
+            }
+
         }
     }
 }

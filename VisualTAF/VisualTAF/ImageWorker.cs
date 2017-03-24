@@ -38,20 +38,6 @@ namespace VisualTAF
         public void FindSubImage(string imagePath, string subImagePath)
         {
             var diffImagePath = @"C:\Users\Yauheni_Dzima\Source\Repos\VisualTAF\VisualTAF\VisualTAF\bin\Debug\Win";
-
-            //using (MagickImage image1 = new MagickImage(path1)) ;
-            //using (MagickImage image2 = new MagickImage(path2)) ;
-                //using (MagickImage diffImage = new MagickImage())
-                //{
-                //    DateTime starTime = DateTime.Now;
-                //    MagickSearchResult magickSearchResult = image1.SubImageSearch(image2);
-                //    MagickImage searchResultImage = magickSearchResult.SimilarityImage;
-                //    image1.Compare(image2, ErrorMetric.Absolute, diffImage);
-                //    diffImage.Write(diffImagePath+"2.png");
-                //    searchResultImage.Write(diffImagePath+"SubImageSearch.png");
-                //    DateTime finishTime = DateTime.Now;
-                //    Console.WriteLine(finishTime - starTime);
-                //}
             Image<Bgr, byte> source = new Image<Bgr, byte>(imagePath); // Image B
             Image<Bgr, byte> template = new Image<Bgr, byte>(subImagePath); // Image A
             Image<Bgr, byte> imageToShow = source.Copy();
@@ -70,8 +56,6 @@ namespace VisualTAF
                     imageToShow.Draw(match, new Bgr(Color.Red), 3);
                 }
             }
-
-            // Show imageToShow in an ImageBox (here assumed to be called imageBox1)
             using (MagickImage image1 = new MagickImage(imageToShow.Bitmap))
             {
                 image1.Write(diffImagePath+"2.png");

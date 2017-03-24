@@ -68,9 +68,9 @@ namespace VisualTAF
         {
             MagickColor color = new MagickColor(Color.Red);
 
-            using (var MagickImage = new MagickImage(image))
+            using (var magickImage = new MagickImage(image))
             {
-                using (var pixels = MagickImage.GetPixels())
+                using (var pixels = magickImage.GetPixels())
                 {
                     foreach (var pixel in pixels)
                     {
@@ -83,6 +83,22 @@ namespace VisualTAF
                         }
                     }
                 }
+            }
+        }
+
+        public void FindSamePartsInImages(string etalonImagePath, string newImagePath)
+        {
+            var samePartImagePath = @"C:\Users\Yauheni_Dzima\Source\Repos\VisualTAF\VisualTAF\VisualTAF\bin\Debug\Win";
+            using (MagickImage etalon = new MagickImage(etalonImagePath))
+
+            using (MagickImage newImage = new MagickImage(newImagePath))
+
+            using (MagickImage diffImage = new MagickImage())
+            {
+
+                etalon.Compare(newImage, ErrorMetric.Absolute, diffImage);
+
+                diffImage.Write(samePartImagePath + "3.png");
             }
         }
     }

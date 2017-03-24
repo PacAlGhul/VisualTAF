@@ -56,11 +56,34 @@ namespace VisualTAF
                     imageToShow.Draw(match, new Bgr(Color.Red), 3);
                 }
             }
+            FindSpecifiedColor(imageToShow.ToBitmap());
             using (MagickImage image1 = new MagickImage(imageToShow.Bitmap))
             {
                 image1.Write(diffImagePath+"2.png");
             }
 
+        }
+
+        public void FindSpecifiedColor(Bitmap image)
+        {
+            MagickColor color = new MagickColor(Color.Red);
+
+            using (var MagickImage = new MagickImage(image))
+            {
+                using (var pixels = MagickImage.GetPixels())
+                {
+                    foreach (var pixel in pixels)
+                    {
+                        /* Exact match */
+                        if (pixel.ToColor().Equals(color))
+                        {
+                            Console.WriteLine($"{pixel.X}, {pixel.Y}");
+                            HelpMethods.Click(pixel.X,pixel.Y);
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }

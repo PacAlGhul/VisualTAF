@@ -15,13 +15,11 @@ namespace VisualTAF
         public void TestMethod()
         {
             string path1 = @"C:\Users\Yauheni_Dzima\Source\Repos\VisualTAF\VisualTAF\VisualTAF\bin\Debug\Desktop.png";
-            string path2 = @"C:\Users\Yauheni_Dzima\Source\Repos\VisualTAF\VisualTAF\VisualTAF\bin\Debug\WinButton.png";
-            string path3 = @"C:\Users\Yauheni_Dzima\Source\Repos\VisualTAF\VisualTAF\VisualTAF\bin\Debug\euro.png";
+            string path2 = @"C:\Users\Yauheni_Dzima\Source\Repos\VisualTAF\VisualTAF\VisualTAF\bin\Debug\Hide.png";
             ImageWorker image = new ImageWorker();
             image.TakeScreenshot(path1);
             Console.WriteLine(image.FindDifference(path1, path2));
-            image.FindSubImage(path1,path2);
-            //HelpMethods.Click(1850,0);
+            image.FindSubImage(path1,path2);//~650 milliseconds
             HelpMethods.ForDebug();
         }
     }

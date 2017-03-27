@@ -12,7 +12,7 @@ namespace VisualTAF
     class HelpMethods
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern void mouse_event(long dwFlags, long dx, long dy, long cButtons, long dwExtraInfo);
+        private static extern void mouse_event(long dwFlags, long dx, long dy, long cButtons, long dwExtraInfo);
 
         private const int MOUSEEVENTF_LEFTDOWN = 0x02;
         private const int MOUSEEVENTF_LEFTUP = 0x04;
@@ -31,6 +31,12 @@ namespace VisualTAF
             int posX = Cursor.Position.X;
             int posY = Cursor.Position.Y;
             Console.WriteLine($"X:{posX},Y:{posY}");
+        }
+
+        public static void DoubleClick(int X, int Y)
+        {
+            Click(X,Y);
+            Click(X, Y);
         }
     }
 }

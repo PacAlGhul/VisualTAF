@@ -78,7 +78,7 @@ namespace VisualTAF
                         if (pixel.ToColor().Equals(color))
                         {
                             Console.WriteLine($"{pixel.X}, {pixel.Y}");
-                            HelpMethods.Click(pixel.X,pixel.Y);
+                            HelpMethods.DoubleClick(pixel.X,pixel.Y);
                             break;
                         }
                     }
